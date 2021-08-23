@@ -45,28 +45,28 @@ int main()
 {
     sc_api::ScreenRecorder recorder;
 
-	// (buffer_size_in_seconds, desired_FPS)
+    // (buffer_size_in_seconds, desired_FPS)
     recorder.init(5, 10);
 
-	// Let recorder thread work for 10 seconds
+    // Let recorder thread work for 10 seconds
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
-	// Initialize recording with the following parameters:
-	// Recording directory: "."
-	// Prefix (will be concatenated with a screen number): "out_mon_t1_"
-	// API type (simply use wbFFMPEG)
+    // Initialize recording with the following parameters:
+    // Recording directory: "."
+    // Prefix (will be concatenated with a screen number): "out_mon_t1_"
+    // API type (simply use wbFFMPEG)
     recorder.startRecording(".", "out_mon_t1_", sc_api::wbFFMPEG);
 	
-	// Sleep for 20 seconds more
+    // Sleep for 20 seconds more
     std::this_thread::sleep_for(std::chrono::seconds(20));
     
-	// In the end, get a file named "out_mon_t1_0.mp4" 
-	// in a desired directory, with the length of 25 seconds.
-	// 5: buffered, from the first sleep 
-	// 20: during the last sleep
+    // In the end, get a file named "out_mon_t1_0.mp4" 
+    // in a desired directory, with the length of 25 seconds.
+    // 5: buffered, from the first sleep 
+    // 20: during the last sleep
     recorder.stopRecording();
 	
-	return 0;
+    return 0;
 }
 ```
 
@@ -86,7 +86,7 @@ int main()
 	
     auto writer = sc_api::createVideoWriter(sc_api::wbFFMPEG, { "out.mp4", 25, 1024, 768, 800000 });
 
-	// let's generate some frames
+    // let's generate some frames
 	
     for (int i = 0; i < 500; i++)
     {
@@ -95,11 +95,11 @@ int main()
         cv::Point pt2(rand() % 1024, rand() % 768);
         cv::rectangle(mat, pt1, pt2, cv::Scalar::all(255), 8);
 
-		// and simply write them into a writer object
+        // and simply write them into a writer object
         writer->write(mat);
     }
 	
-	return 0;
+    return 0;
 }
 
 ```

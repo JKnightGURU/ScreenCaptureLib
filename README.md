@@ -33,7 +33,7 @@ ScreenCaptureLib was created somewhere around 2019 as an internal tool, due to m
 ### Usage
 
 Screen recording:
-```
+```cpp
 #include "screenrecorder.h"
 
 #include <thread>
@@ -72,7 +72,7 @@ int main()
 
 Video file writer:
 
-```
+```cpp
 #include "basevideowriter.h"
 
 #include <thread>

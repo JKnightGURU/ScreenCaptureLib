@@ -23,8 +23,8 @@ ScreenCaptureLib was created somewhere around 2019 as an internal tool, due to m
 
 ### Developers
 
-- @jknightmmcs
-- @TheDZhon
+- @[jknightmmcs]
+- @[TheDZhon]
 
 ### How to build
 > To be added later
@@ -110,3 +110,5 @@ int main()
 MIT
 
 [screen_capture_lite]: <https://github.com/smasherprog/screen_capture_lite>
+[jknightmmcs]: <https://github.com/jknightmmcs>
+[TheDZhon]: <https://github.com/thedzhon>

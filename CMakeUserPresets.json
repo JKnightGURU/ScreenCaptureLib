@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 14,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "folders",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_PROJECT_INCLUDE": "${sourceDir}/project-include-after.cmake"
+      }
+    },
+    {
+      "name": "dev",
+      "binaryDir": "${sourceDir}/build/dev",
+      "inherits": ["folders", "dev-mode", "ci-unix", "clang-tidy", "cppcheck"],
+      "cacheVariables": {
+        "BUILD_MCSS_DOCS": "ON"
+      }
+    },
+    {
+      "name": "dev-coverage",
+      "binaryDir": "${sourceDir}/build/coverage",
+      "inherits": ["folders", "dev-mode", "coverage-unix"]
+    }
+  ]
+}

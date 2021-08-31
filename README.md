@@ -26,10 +26,6 @@ ScreenCaptureLib was created somewhere around 2019 as an internal tool, due to m
 - @[jknightmmcs]
 - @[TheDZhon]
 
-### How to build
-> To be added later
-> This is a stub
-
 ### Usage
 
 Screen recording:

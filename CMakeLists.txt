@@ -10,8 +10,6 @@ project(
     LANGUAGES CXX
 )
 
-option(BUILD_SHARED_LIBS "Build shared lib instead static one" ON)
-
 docs_early_return()
 
 include(cmake/project-is-top-level.cmake)
@@ -86,6 +84,13 @@ set_target_properties(
     EXPORT_NAME ScreenCaptureLib
     OUTPUT_NAME ScreenCaptureLib
 )
+
+# --- Compiler setup ---
+if(MSVC)
+    target_compile_options(ScreenCaptureLib_ScreenCaptureLib PRIVATE /W4 /WX)
+else()
+    target_compile_options(ScreenCaptureLib_ScreenCaptureLib PRIVATE -Wno-deprecated-declarations -Werror)
+endif()
 
 target_include_directories(
     ScreenCaptureLib_ScreenCaptureLib ${ScreenCaptureLib_warning_guard}

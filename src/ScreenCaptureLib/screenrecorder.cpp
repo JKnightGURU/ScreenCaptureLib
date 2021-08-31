@@ -5,7 +5,7 @@
 #include <thread>
 #include <atomic>
 
-#include "wisdom/circular_buffer.h"
+#include <boost/circular_buffer.hpp>
 
 #include "basevideowriter.h"
 #include "cvvideowriter.h"
@@ -43,7 +43,7 @@ private:
     std::shared_ptr<BaseVideoWriter> writer_;
     std::thread write_buf_thr_;
     std::shared_ptr<std::atomic<bool>> is_stop_write_;
-    wisdom::CircularBuffer<cv::Mat> buffer_;
+    boost::circular_buffer_space_optimized<cv::Mat> buffer_;
     int fps_;
     int width_, height_;
 };
@@ -95,7 +95,7 @@ void ScreenRecorderImpl::init(int buffer_sec_size, int fps)
     }
     grabber_->init([this](cv::Mat mat, int mon_index) {
                        std::lock_guard<std::mutex>(monitors_[static_cast<size_t>(mon_index)]->mutex_write_);
-                       monitors_[static_cast<size_t>(mon_index)]->buffer_.add(mat);
+                       monitors_[static_cast<size_t>(mon_index)]->buffer_.push_back(mat);
                    }, fps);
 }
 
@@ -128,30 +128,30 @@ void ScreenRecorderImpl::startRecording(const char* output_path, const char* nam
             std::thread([i, this]() {
                             while (!*monitors_[i]->is_stop_write_)
                             {
-                                if (monitors_[i]->buffer_.queue_size() == 0)
+                                if (monitors_[i]->buffer_.size() == 0)
                                 {
                                     std::this_thread::sleep_for(std::chrono::milliseconds(200));
                                 }
                                 else
                                 {
-                                    while ((monitors_[i]->buffer_.queue_size() != 0) &&
+                                    while ((monitors_[i]->buffer_.size() != 0) &&
                                            (!*monitors_[i]->is_stop_write_))
                                     {
                                         std::lock_guard<std::mutex>(monitors_[i]->mutex_write_);
                                         cv::Mat img = monitors_[i]->buffer_.front();
                                         monitors_[i]->writer_->write(img);
-                                        monitors_[i]->buffer_.pop();
+                                        monitors_[i]->buffer_.pop_back();
                                     }
 
                                     if (*monitors_[i]->is_stop_write_)
                                     {
                                         std::lock_guard<std::mutex>(monitors_[i]->mutex_write_);
 
-                                        while (monitors_[i]->buffer_.queue_size() != 0)
+                                        while (monitors_[i]->buffer_.size() != 0)
                                         {
                                             cv::Mat img = monitors_[i]->buffer_.front();
                                             monitors_[i]->writer_->write(img);
-                                            monitors_[i]->buffer_.pop();
+                                            monitors_[i]->buffer_.pop_back();
                                         }
                                     }
                                 }

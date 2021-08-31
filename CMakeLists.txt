@@ -21,6 +21,9 @@ include(cmake/variables.cmake)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
+find_package(Boost 1.37.0 REQUIRED)
+include_directories(${Boost_INCUDE_DIRS})
+
 if(WIN32)
     include_directories(external/screen_capture_lite/include)
 endif(WIN32)

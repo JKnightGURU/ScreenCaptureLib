@@ -1,11 +1,11 @@
-#ifndef BASEVIDEOWRITER_H
-#define BASEVIDEOWRITER_H
+#pragma once
 
 #include <opencv2/core.hpp>
 #include <cstdint>
 #include <memory>
 
-#include "utils/scap_defs.h"
+#include "ScreenCaptureLib/defs/scap_defs.hpp"
+#include <ScreenCaptureLib/ScreenCaptureLib_export.h>
 
 namespace sc_api {
 
@@ -17,7 +17,7 @@ struct VWSettings
     int  bitrate_ = 800000;
 };
 
-class DLL_PREFIX BaseVideoWriter
+class SCREENCAPTURELIB_EXPORT BaseVideoWriter
 {
 public:
     BaseVideoWriter() = default;
@@ -37,6 +37,7 @@ protected:
     VWSettings settings_;
 
 private:
+    SCREENCAPTURELIB_SUPPRESS_C4251
     static BaseVideoWriter* createVideoWriterImpl(WriterBackend backend, VWSettings settings);
 };
 
@@ -46,4 +47,3 @@ inline std::shared_ptr<BaseVideoWriter> createVideoWriter(WriterBackend backend,
 }
 
 }
-#endif // BASEVIDEOWRITER_H

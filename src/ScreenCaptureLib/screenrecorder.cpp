@@ -1,4 +1,4 @@
-#include "screenrecorder.h"
+#include "ScreenCaptureLib/screenrecorder.hpp"
 
 #include <iostream>
 #include <mutex>
@@ -7,7 +7,7 @@
 
 #include <boost/circular_buffer.hpp>
 
-#include "basevideowriter.h"
+#include "ScreenCaptureLib/basevideowriter.hpp"
 #include "cvvideowriter.h"
 #include "ffmpegvideowriter.h"
 
@@ -207,7 +207,8 @@ void ScreenRecorder::stopRecording()
 
 uint32_t ScreenRecorder::version()
 {
-    return SCREENCAPTURE_VERSION;
+    return 0x00000100;
+    /*return SCREENCAPTURE_VERSION;*/
 }
 
 }

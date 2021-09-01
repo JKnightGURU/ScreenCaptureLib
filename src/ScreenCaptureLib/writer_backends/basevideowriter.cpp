@@ -1,4 +1,4 @@
-#include "basevideowriter.h"
+#include "ScreenCaptureLib/basevideowriter.hpp"
 
 #include "cvvideowriter.h"
 #include "ffmpegvideowriter.h"

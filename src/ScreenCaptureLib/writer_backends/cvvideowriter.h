@@ -1,11 +1,10 @@
-#ifndef CVVIDEOWRITER_H
-#define CVVIDEOWRITER_H
+#pragma once
 
 #include <memory>
 
 #include <opencv2/videoio.hpp>
 
-#include "basevideowriter.h"
+#include "ScreenCaptureLib/basevideowriter.hpp"
 
 namespace sc_api {
 
@@ -22,4 +21,3 @@ private:
 };
 
 }
-#endif // CVVIDEOWRITER_H

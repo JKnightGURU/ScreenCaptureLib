@@ -1,7 +1,6 @@
-#ifndef MFVIDEOWRITER_H
-#define MFVIDEOWRITER_H
+#pragma once
 
-#include "basevideowriter.h"
+#include "ScreenCaptureLib/basevideowriter.hpp"
 
 #include <Windows.h>
 #include <mfapi.h>
@@ -32,4 +31,3 @@ private:
 };
 
 }
-#endif // MFVIDEOWRITER_H

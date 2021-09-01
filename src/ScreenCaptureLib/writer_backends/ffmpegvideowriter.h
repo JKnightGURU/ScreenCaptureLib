@@ -1,7 +1,6 @@
-#ifndef FFMPEGVIDEOWRITER_H
-#define FFMPEGVIDEOWRITER_H
+#pragma once
 
-#include "basevideowriter.h"
+#include "ScreenCaptureLib/basevideowriter.hpp"
 
 extern "C" {
 #include <libswscale/swscale.h>
@@ -36,4 +35,3 @@ private:
 };
 
 }
-#endif // FFMPEGVIDEOWRITER_H

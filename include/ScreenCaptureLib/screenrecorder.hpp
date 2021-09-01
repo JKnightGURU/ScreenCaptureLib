@@ -1,18 +1,16 @@
-#ifndef SCREENRECORDER_H
-#define SCREENRECORDER_H
+#pragma once
 
 #include <string>
 #include <vector>
 
-#define SCREENCAPTURE_VERSION 0x00000021
-
-#include "utils/scap_defs.h"
+#include "ScreenCaptureLib/defs/scap_defs.hpp"
+#include "ScreenCaptureLib/ScreenCaptureLib_export.h"
 
 namespace sc_api {
 
 class ScreenRecorderImpl;
 
-class DLL_PREFIX ScreenRecorder
+class SCREENCAPTURELIB_EXPORT ScreenRecorder
 {
 public:
     ScreenRecorder();
@@ -44,12 +42,8 @@ public:
     uint32_t version();
 
 private:
+    SCREENCAPTURELIB_SUPPRESS_C4251
     ScreenRecorderImpl* impl_;
 };
 
 }
-
-#include "utils/lib_autolink_mm.h"
-#endif // SCREENRECORDER_H
-
-/* REVISION: eb7977c84a7c */

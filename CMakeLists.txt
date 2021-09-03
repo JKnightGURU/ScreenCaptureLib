@@ -35,8 +35,8 @@ find_library(SWSCALE_LIBRARY swscale)
 
 if(WIN32)
     find_path(SC_LITE_INCLUDE_DIR ScreenCapture.h HINTS external/screen_capture_lite/include)
-	find_library(SC_LITE_LIBRARY_DEBUG screen_capture_lite_d HINTS external/screen_capture_lite/lib)
-	find_library(SC_LITE_LIBRARY_RELEASE screen_capture_lite HINTS external/screen_capture_lite/lib)
+    find_library(SC_LITE_LIBRARY_DEBUG screen_capture_lite_d HINTS external/screen_capture_lite/lib)
+    find_library(SC_LITE_LIBRARY_RELEASE screen_capture_lite HINTS external/screen_capture_lite/lib)
 endif(WIN32)
 
 # ---- Declare library ----
@@ -123,23 +123,27 @@ target_include_directories(
     src/ScreenCaptureLib
     src/ScreenCaptureLib/grabber_backends
     src/ScreenCaptureLib/writer_backends
-	${OpenCV_INCLUDE_DIRS}
-	${Boost_INCLUDE_DIRS}
-	${AVCODEC_INCLUDE_DIR}
-	${AVFORMAT_INCLUDE_DIR}
-	${AVUTIL_INCLUDE_DIR}
-	${SWSCALE_INCLUDE_DIR}
-	${SC_LITE_INCLUDE_DIR}
+    ${OpenCV_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
+    ${AVCODEC_INCLUDE_DIR}
+    ${AVFORMAT_INCLUDE_DIR}
+    ${AVUTIL_INCLUDE_DIR}
+    ${SWSCALE_INCLUDE_DIR}
+    ${SC_LITE_INCLUDE_DIR}
 )
 
 target_link_libraries(ScreenCaptureLib_ScreenCaptureLib 
     ${OpenCV_LIBS}
-	${AVCODEC_LIBRARY}
-	${AVFORMAT_LIBRARY}
-	${AVUTIL_LIBRARY}
-	${SWSCALE_LIBRARY}
-	debug ${SC_LITE_LIBRARY_DEBUG}
-	optimized ${SC_LITE_LIBRARY_RELEASE})
+    ${AVCODEC_LIBRARY}
+    ${AVFORMAT_LIBRARY}
+    ${AVUTIL_LIBRARY}
+    ${SWSCALE_LIBRARY})
+
+if(WIN32)
+        target_link_libraries(ScreenCaptureLib_ScreenCaptureLib
+	    debug ${SC_LITE_LIBRARY_DEBUG}
+	    optimized ${SC_LITE_LIBRARY_RELEASE})
+endif(WIN32)
 
 target_compile_features(ScreenCaptureLib_ScreenCaptureLib PUBLIC cxx_std_17)
 

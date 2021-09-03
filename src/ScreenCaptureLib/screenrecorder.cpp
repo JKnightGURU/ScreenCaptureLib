@@ -94,7 +94,7 @@ void ScreenRecorderImpl::init(int buffer_sec_size, int fps)
         monitors_.back()->height_ = monitors[i].height_;
     }
     grabber_->init([this](cv::Mat mat, int mon_index) {
-                       std::lock_guard<std::mutex>(monitors_[static_cast<size_t>(mon_index)]->mutex_write_);
+                       std::lock_guard<std::mutex> guard(monitors_[static_cast<size_t>(mon_index)]->mutex_write_);
                        monitors_[static_cast<size_t>(mon_index)]->buffer_.push_back(mat);
                    }, fps);
 }
@@ -137,7 +137,7 @@ void ScreenRecorderImpl::startRecording(const char* output_path, const char* nam
                                     while ((monitors_[i]->buffer_.size() != 0) &&
                                            (!*monitors_[i]->is_stop_write_))
                                     {
-                                        std::lock_guard<std::mutex>(monitors_[i]->mutex_write_);
+                                        std::lock_guard<std::mutex> guard (monitors_[i]->mutex_write_);
                                         cv::Mat img = monitors_[i]->buffer_.front();
                                         monitors_[i]->writer_->write(img);
                                         monitors_[i]->buffer_.pop_back();
@@ -145,7 +145,7 @@ void ScreenRecorderImpl::startRecording(const char* output_path, const char* nam
 
                                     if (*monitors_[i]->is_stop_write_)
                                     {
-                                        std::lock_guard<std::mutex>(monitors_[i]->mutex_write_);
+                                        std::lock_guard<std::mutex> guard(monitors_[i]->mutex_write_);
 
                                         while (monitors_[i]->buffer_.size() != 0)
                                         {

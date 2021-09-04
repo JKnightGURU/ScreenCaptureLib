@@ -10,7 +10,7 @@ set(package ScreenCaptureLib)
 
 install(
     DIRECTORY
-    include/
+    include/ScreenCaptureLib/
     "${PROJECT_BINARY_DIR}/export/"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
     COMPONENT ScreenCaptureLib_Development

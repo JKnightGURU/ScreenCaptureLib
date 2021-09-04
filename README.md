@@ -17,7 +17,7 @@ ScreenCaptureLib was created somewhere around 2019 as an internal tool, due to m
 
 ### Dependencies
 
-- FFMPEG <4.0
+- FFMPEG and all libraries included (avcodec, ...)
 - OpenCV
 - [screen_capture_lite] - *Windows*
 

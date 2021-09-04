@@ -10,8 +10,6 @@ project(
     LANGUAGES CXX
 )
 
-option(BUILD_SHARED_LIBS "Build shared lib instead static one" ON)
-
 docs_early_return()
 
 include(cmake/project-is-top-level.cmake)
@@ -19,10 +17,26 @@ include(cmake/variables.cmake)
 
 # ---- Declare dependencies ----
 find_package(OpenCV REQUIRED)
-include_directories(${OpenCV_INCLUDE_DIRS})
+find_package(Boost 1.37.0 REQUIRED)
+
+# FFMPEG doesn't have nation cmake support
+# So instead of find_package we use find_path + find_library calls 
+find_path(AVCODEC_INCLUDE_DIR libavcodec/avcodec.h)
+find_library(AVCODEC_LIBRARY avcodec)
+
+find_path(AVFORMAT_INCLUDE_DIR libavformat/avformat.h)
+find_library(AVFORMAT_LIBRARY avformat)
+
+find_path(AVUTIL_INCLUDE_DIR libavutil/avutil.h)
+find_library(AVUTIL_LIBRARY avutil)
+
+find_path(SWSCALE_INCLUDE_DIR libswscale/swscale.h)
+find_library(SWSCALE_LIBRARY swscale)
 
 if(WIN32)
-    include_directories(external/screen_capture_lite/include)
+    find_path(SC_LITE_INCLUDE_DIR ScreenCapture.h HINTS external/screen_capture_lite/include)
+    find_library(SC_LITE_LIBRARY_DEBUG screen_capture_lite_d HINTS external/screen_capture_lite/lib)
+    find_library(SC_LITE_LIBRARY_RELEASE screen_capture_lite HINTS external/screen_capture_lite/lib)
 endif(WIN32)
 
 # ---- Declare library ----
@@ -84,6 +98,13 @@ set_target_properties(
     OUTPUT_NAME ScreenCaptureLib
 )
 
+# --- Compiler setup ---
+if(MSVC)
+    target_compile_options(ScreenCaptureLib_ScreenCaptureLib PRIVATE /W3 /WX /wd4996)
+else()
+    target_compile_options(ScreenCaptureLib_ScreenCaptureLib PRIVATE -Wno-deprecated-declarations -Werror)
+endif()
+
 target_include_directories(
     ScreenCaptureLib_ScreenCaptureLib ${ScreenCaptureLib_warning_guard}
     PUBLIC
@@ -96,13 +117,33 @@ target_include_directories(
     "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/export>"
 )
 
-include_directories(
+target_include_directories(
+    ScreenCaptureLib_ScreenCaptureLib
+	PRIVATE
     src/ScreenCaptureLib
     src/ScreenCaptureLib/grabber_backends
     src/ScreenCaptureLib/writer_backends
+    ${OpenCV_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
+    ${AVCODEC_INCLUDE_DIR}
+    ${AVFORMAT_INCLUDE_DIR}
+    ${AVUTIL_INCLUDE_DIR}
+    ${SWSCALE_INCLUDE_DIR}
+    ${SC_LITE_INCLUDE_DIR}
 )
 
-target_link_libraries(ScreenCaptureLib_ScreenCaptureLib ${OpenCV_LIBS})
+target_link_libraries(ScreenCaptureLib_ScreenCaptureLib 
+    ${OpenCV_LIBS}
+    ${AVCODEC_LIBRARY}
+    ${AVFORMAT_LIBRARY}
+    ${AVUTIL_LIBRARY}
+    ${SWSCALE_LIBRARY})
+
+if(WIN32)
+        target_link_libraries(ScreenCaptureLib_ScreenCaptureLib
+	    debug ${SC_LITE_LIBRARY_DEBUG}
+	    optimized ${SC_LITE_LIBRARY_RELEASE})
+endif(WIN32)
 
 target_compile_features(ScreenCaptureLib_ScreenCaptureLib PUBLIC cxx_std_17)
 

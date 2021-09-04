@@ -91,8 +91,8 @@ void Handle::update()
     std::chrono::duration<double> time_span =
             std::chrono::duration_cast<std::chrono::duration<double>>(current - last_written_);
 
-    int msec_span = time_span.count() * 1000;
-    int for_frame = 1000 / fps_;
+    const int msec_span = static_cast<int> (time_span.count() * 1000);
+    const int for_frame = 1000 / fps_;
 
     if (msec_span < for_frame)
         std::this_thread::sleep_for(std::chrono::milliseconds(for_frame - msec_span));

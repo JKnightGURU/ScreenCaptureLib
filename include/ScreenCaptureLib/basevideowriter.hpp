@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "ScreenCaptureLib/defs/scap_defs.hpp"
-#include <ScreenCaptureLib/ScreenCaptureLib_export.h>
+#include "ScreenCaptureLib/ScreenCaptureLib_export.h"
 
 namespace sc_api {
 
